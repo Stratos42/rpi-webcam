@@ -1,0 +1,136 @@
+Pi-Pan README
+
+Latest version of these instructions are available at:
+http://www.OpenElectrons.com/pages/24
+
+
+---------------------------------------------
+Required Operating System for Pi-Pan
+---------------------------------------------
+
+Pi-Pan works with standard Raspbian distribution.
+You can download it here:
+
+http://www.raspberrypi.org/downloads
+
+---------------------------------------------
+Pi-Pan Software and installation
+---------------------------------------------
+
+Download and unzip the software on Raspberry Pi from following url:
+http://www.openelectrons.com/docs/viewdocs/3
+
+Pi-Pan uses ServoBlaster; install it in your init scripts by following command:
+
+cd pi-pan
+sudo ./install-pi-pan.bash
+
+
+---------------------------------------------
+Before you assemble Pi-Pan head assembly
+---------------------------------------------
+
+Bring the servos to neutral position. To do that:
+
+    Attach the controller board on GPIO pins
+    Attach Servo wires on servo pins. (Connect the wire so the orange wire is nearest the white line on the PCB).
+        Tilt servo is on S5
+        Pan servo is on S4
+    Power the Raspberry Pi (Minimum power 5V, 1.2amps)
+
+
+Now, to bring the servos to neutral position. run following command:
+
+cd pi-pan
+python ./neutral_servo.py
+
+Assemble Pi-Pan with instructions from url below:
+http://www.OpenElectrons.com/pages/20
+
+---------------------------------------------
+After you assemble the Pi-Pan assembly
+---------------------------------------------
+
+Check that you have connected servo pins correctly.
+To check Pan servo, run following command:
+
+python ./check-pan.py
+
+
+To check Tilt servo, run following command:
+
+python ./check-tilt.py
+
+
+Try the demo program, run following command:
+
+python ./demo-pi-pan.py
+
+
+---------------------------------------------
+To Use Pi-Light
+---------------------------------------------
+
+First pin on Pi-Light connector has a White square background. Also there is a White square near the first pin on controller board.
+
+While connecting cable from Pi-Light to controller board, ensure that
+the pins with White square backgrounds match on both ends.
+
+To install required packages, run following:
+
+sudo apt-get install python-smbus
+
+
+By default I2C interface is disabled on Raspberry PI.
+To enable this interface, run:
+
+sudo sed -i 's/blacklist i2c-bcm2708/#blacklist i2c-bcm2708/g' /etc/modprobe.d/raspi-blacklist.conf
+
+sudo echo 'i2c-bcm2708' >> /etc/modules
+
+sudo echo 'i2c-dev' >> /etc/modules
+
+
+To check that Pi-Light is working, run:
+
+python ./check-pilight.py
+
+
+---------------------------------------------
+Troubleshooting Pi-Light (Optional)
+---------------------------------------------
+
+Install I2C tools for troubleshooting, using following command:
+(i2c-tools are not needed for Pi-Light to function).
+
+sudo apt-get install i2c-tools
+
+
+To check for i2c device. run following command:
+(I2C address of Pi-Light is 18.)
+For Model B:
+
+sudo i2cdetect 1
+
+
+For Model A:
+
+sudo i2cdetect 0
+
+
+result should look like this:
+
+WARNING! This program can confuse your I2C bus, cause data loss and worse!
+I will probe file /dev/i2c-1.
+I will probe address range 0x03-0x77.
+Continue? [Y/n] y
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+     00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+     10: -- -- -- -- -- -- -- -- 18 -- -- -- -- -- -- --
+     20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+     30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+     40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+     50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+     60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+

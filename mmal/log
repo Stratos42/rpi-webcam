@@ -1,0 +1,3 @@
+[-1242315936] [NTC] [ALL] conf_load: Processing thread 0 - config file motion-mmalcam.conf
+[-1242315936] [NTC] [ALL] motion_startup: Motion mmaltest Started
+[-1242315936] [NTC] [ALL] motion_startup: Logging to file (/home/pi/motion.log)
