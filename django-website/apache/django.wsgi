@@ -1,8 +1,8 @@
 import os, sys
 
-sys.path.append('/home/france_a/aufrinfo.net/test/cgi/django_twisted_chat')
+sys.path.append('/home/france_a/aufrinfo.net/camera')
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'django_twisted_chat.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'picam_website.settings'
 
 import django.core.handlers.wsgi
 

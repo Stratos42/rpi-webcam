@@ -5,6 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-                       url(r'^chats/', include('chat.urls')),
+                       url(r'^$', include('camera.urls')),
+                       url(r'^cameras/', include('camera.urls')),
                        url(r'^admin/', include(admin.site.urls)),
 )

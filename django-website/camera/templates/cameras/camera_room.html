@@ -1,15 +1,17 @@
 {% load staticfiles %}
 <html>
 <head>
- <link href="{% static "jquery-ui-1.10.3.custom.css" %}" rel="stylesheet">
- <script type="text/javascript" src="{% static "jquery-1.9.1.js" %}"></script>
- <script type="text/javascript" src="{% static "jquery-ui-1.10.3.custom.js" %}"></script>
- <script type="text/javascript" src="{% static "jquery.gracefulWebSocket.js" %}"></script>
- <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
- <script type="text/javascript">
+  <title>Stratos webcam</title>
+  <link href="{% static "jquery-ui-1.10.3.custom.css" %}" rel="stylesheet">
+  <script type="text/javascript" src="{% static "jquery-1.9.1.js" %}"></script>
+  <script type="text/javascript" src="{% static "jquery-ui-1.10.3.custom.js" %}"></script>
+  <script type="text/javascript" src="{% static "jquery.gracefulWebSocket.js" %}"></script>
+  <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
+  <script type="text/javascript">
     $(document).ready( function() {
     window.chat = {};
     network=myip.split(".");
+      $("#nname").val(myip);
      if (network[0] == "129" && network[1] == "12" && (network[2] == "128" || network[2] == "129" || network[2] == "130" || network[2] == "131")) {
        chat.ws = $.gracefulWebSocket("ws://129.12.129.60:1025/ws");
        $("#img").attr('src','http://129.12.129.60:8081');
@@ -53,7 +55,8 @@
 
       if (e.keyCode == 13) {
         e.preventDefault(); // sometimes useful
-        chat.send(myip + ": " + inputbox.value);
+          name = $("#nname").val();
+        chat.send(name + ": " + inputbox.value);
         inputbox.value="";
       }
     }, false);
@@ -147,7 +150,7 @@
  </style>
 </head>
 <div class="fullscreenDiv">
-  <div id="title"><h1>Stratos Academy</h1></div>
+  <div id="title"><h1>Stratos View</h1></div>
   <div id="cam">
     <img id="img" class="decoded" width=640 height=480 src="http://aufrinfo.net:8083/" alt="Ooops"></img>
   </div>
@@ -160,7 +163,8 @@
       <ul>
       </ul>
     </div>
-    <textarea name="term" id="inputbox" onblur="if (this.value == '') {this.value = 'Type here';}" onfocus="if (this.value == 'Type here') {this.value = '';}">Type here</textarea>
+    <textarea name="term" id="inputbox" onblur="if (this.value == '') {this.value = 'Type here';}" onfocus="if (this.value == 'Type here') {this.value = '';}">Type here</textarea></br>
+    Nickname: <input id="nname" type="text" name="nname">
   </div>
 </div>
 <script>

@@ -3,8 +3,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Django settings for django_twisted_chat project.
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -60,9 +58,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = '/django_twisted_chat/media/'
+MEDIA_URL = '/media/'
 
-ADMIN_MEDIA_PREFIX = '/django_twisted_chat/media/admin/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -72,7 +70,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/django_twisted_chat/media/static/'
+STATIC_URL = '/media/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -109,10 +107,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'django_twisted_chat.urls'
+ROOT_URLCONF = 'picam_website.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'django_twisted_chat.wsgi.application'
+WSGI_APPLICATION = 'picam_website.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -129,7 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'chat',
+    'camera',
     # 'django.contrib.admindocs',
 )
 
