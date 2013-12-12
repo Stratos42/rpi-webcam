@@ -26,6 +26,7 @@ First, you need to install Python 2.7 (dev) and PiPan module (http://www.openele
 	tar -zxvf pi-pan.tar.gz
 	cd pi-pan
 	sudo ./install-pi-pan.bash
+	sudo cp pipan.py /usr/lib/python2.7/
 
 After, install the Twisted (branch websocket-4173-4)
 	
