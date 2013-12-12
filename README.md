@@ -2,8 +2,10 @@ RPi-Webcam
 ===========
 
 This project is based on django_twisted_chat (https://github.com/aausch/django_twisted_chat.git).
-The video streaming use the program 'motion' with the configuration file modified by Robin Newman (http://rbnrpi.wordpress.com/)
-For the movement, I'm using the Pi-Pan Kit, buy on OpenElectrons.com (http://openelectrons.com/index.php?module=pagemaster&PAGE_id=15)
+
+The video streaming use the program 'motion' with the configuration file modified by Robin Newman (http://rbnrpi.wordpress.com/).
+
+For the movement, I'm using the Pi-Pan Kit, buy on OpenElectrons.com (http://openelectrons.com/index.php?module=pagemaster&PAGE_id=15).
 
 *****
 
@@ -16,21 +18,23 @@ This project is composed in 3 parts:
 
 ## Dependencies
 
-First, you need to install:
-- Python 2.7 (development)
-- PiPan module
+First, you need to install Python 2.7 (dev) and PiPan module (http://www.openelectrons.com/pages/24)
 
+	sudo apt-get install python-dev
+	cd /tmp
+	wget http://openelectrons.com/files/documents/pi-pan.tar.gz
+	tar -zxvf pi-pan.tar.gz
 	cd pi-pan
 	sudo ./install-pi-pan.bash
 
-- Twisted (branch websocket-4173-4)
-
+After, install the Twisted (branch websocket-4173-4)
+	
 	cd /tmp
 	git clone https://github.com/twisted/twisted.git
 	git checkout -b websocket origin/websocket-4173-4
 	sudo python setup.py install
 
-- Motion (Tuto: http://rbnrpi.wordpress.com/project-list/setting-up-wireless-motion-detect-cam/)
+And finaly, Motion (See: http://rbnrpi.wordpress.com/project-list/setting-up-wireless-motion-detect-cam/)
 
 ## Twisted Server
 
