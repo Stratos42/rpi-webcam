@@ -8,8 +8,7 @@ def index(request):
     context = {
         'camera_list': camera_rooms,
     }
-    return HttpResponseRedirect("/cameras/1")
-    return render(request,'camera/index.html', context)
+    return render(request,'cameras/index.html', context)
 
 def camera_room(request, camera_room_id):
     camera = get_object_or_404(CameraRoom, pk=camera_room_id)

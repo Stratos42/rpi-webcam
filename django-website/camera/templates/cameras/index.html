@@ -1,9 +1,31 @@
-{% if chat_list %}
-    <ul>
-    {% for chat in chat_list %}
-        <li><a href={% url 'chat_room' chat.id %}>{{ chat.name }}</a></li>
+{% load staticfiles %}
+<html>
+<head>
+  <title>Camera Room List</title>
+  <link href="{% static "jquery-ui-1.10.3.custom.css" %}" rel="stylesheet">
+  <link href="{% static "cameras.css" %}" rel="stylesheet">
+  <script type="text/javascript" src="{% static "jquery-1.9.1.js" %}"></script>
+  <script type="text/javascript" src="{% static "jquery-ui-1.10.3.custom.js" %}"></script>
+  <script type="text/javascript" src="{% static "jquery.gracefulWebSocket.js" %}"></script>
+  <script>
+  $(document).ready( function() {
+      $("#menu-css").css("margin-left", ($(window).width() / 2) - ($("#menu-css").outerWidth() / 2));
+    });
+  </script>
+</head>
+<body>
+<div class="fullscreenDiv">
+  <div id="title">
+    <h1>Cameras Room</h1>
+  </div>
+{% if camera_list %}
+    <ul id="menu-css">
+    {% for camera in camera_list %}
+      <li><a class="link" href="/cameras/{{ camera.id }}">{{ camera.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No chats are available.</p>
 {% endif %}
+</div>
+</body>

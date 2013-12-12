@@ -1,172 +1,109 @@
 {% load staticfiles %}
 <html>
 <head>
-  <title>Stratos webcam</title>
+  <title>{{ camera.name }}</title>
   <link href="{% static "jquery-ui-1.10.3.custom.css" %}" rel="stylesheet">
+  <link href="{% static "cameras.css" %}" rel="stylesheet">
   <script type="text/javascript" src="{% static "jquery-1.9.1.js" %}"></script>
   <script type="text/javascript" src="{% static "jquery-ui-1.10.3.custom.js" %}"></script>
   <script type="text/javascript" src="{% static "jquery.gracefulWebSocket.js" %}"></script>
   <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
   <script type="text/javascript">
-    $(document).ready( function() {
-    window.chat = {};
-    network=myip.split(".");
+  $(document).ready( function() {
+      window.chat = {};
+      network=myip.split(".");
       $("#nname").val(myip);
-     if (network[0] == "129" && network[1] == "12" && (network[2] == "128" || network[2] == "129" || network[2] == "130" || network[2] == "131")) {
-       chat.ws = $.gracefulWebSocket("ws://129.12.129.60:1025/ws");
-       $("#img").attr('src','http://129.12.129.60:8081');
-     } else {
-       chat.ws = $.gracefulWebSocket("ws://aufrinfo.net:8084/ws");
-       $("#img").attr('src','http://aufrinfo.net:8083');
-     }
-    chat.send = function (message) {
-      chat.ws.send(message);
-    }
-
-    chat.ws.onmessage = function (event) {
-      var messageFromServer = event.data;
-      proto = messageFromServer.split(" ")
-      if (proto[0] == "COO") {
-        var dc = proto[1].split("=");
-        if (dc[0] == "x") {
-          var xreceive = parseInt(dc[1]);
-          var current = $( "#hslider" ).slider( "value" );
-          if (xreceive != current) {
-            $( "#hslider" ).slider( "option", "value", xreceive );
-          }
-        } else if (dc[0] == "y") {
-          var yreceive = parseInt(dc[1]);
-          var current = $( "#vslider" ).slider( "value" );
-          if (yreceive != current) {
-            $( "#vslider" ).slider( "option", "value", parseInt(dc[1]) );
-          }
-        }
+      if (network[0] == "129" && network[1] == "12" &&
+          (network[2] == "128" || network[2] == "129" || network[2] == "130" || network[2] == "131")) {
+        chat.ws = $.gracefulWebSocket("ws://{{ camera.socket_ip1 }}:{{ camera.socket_port1 }}/ws");
+        $("#img").attr('src','http://{{ camera.cam_ip1 }}:{{ camera.cam_port1 }}');
       } else {
-        var list_element = document.createElement('li');
-        list_element.innerHTML = messageFromServer;
-        $("#message_list ul").prepend(list_element);
+        chat.ws = $.gracefulWebSocket("ws://{{ camera.socket_ip2 }}:{{ camera.socket_port2 }}/ws");
+        $("#img").attr('src','http://{{ camera.cam_ip2 }}:{{ camera.cam_port2 }}');
       }
-    };
-
-    var inputBox = document.getElementById("inputbox");
-
-    inputbox.addEventListener("keydown", function(e) {
-      if (!e) { var e = window.event; }
-
-      if (e.keyCode == 13) {
-        e.preventDefault(); // sometimes useful
-          name = $("#nname").val();
-        chat.send(name + ": " + inputbox.value);
-        inputbox.value="";
+      chat.send = function (message) {
+        chat.ws.send(message);
       }
-    }, false);
 
-      $( "#vslider" ).slider({ orientation: "vertical", min: 80, max: 220, step: 1 });
-      $( "#hslider" ).slider({ min: 50, max: 250, step: 1 });
-      $( "#vslider" ).on( "slidechange", function( event, ui ) {
-      var values = $( "#vslider" ).slider( "value" );
-      chat.send("COO y=" + values);
-    } );
-      $( "#hslider" ).on( "slidechange", function( event, ui ) {
-      var values = $( "#hslider" ).slider( "value" );
-      chat.send("COO x=" + values);
-    } );
-      jQuery.fn.center = function ()
-      {
-      this.css("top", ($(window).height() / 2) - (this.outerHeight() / 2));
-      this.css("left", ($(window).width() / 2) - (this.outerWidth() / 2));
-      return this;
-    }
+      chat.ws.onmessage = function (event) {
+        var messageFromServer = event.data;
+        proto = messageFromServer.split(" ")
+        if (proto[0] == "COO") {
+          var dc = proto[1].split("=");
+          if (dc[0] == "x") {
+            var xreceive = parseInt(dc[1]);
+            var current = $( "#hslider" ).slider( "value" );
+            if (xreceive != current) {
+              $( "#hslider" ).slider( "option", "value", xreceive );
+            }
+          } else if (dc[0] == "y") {
+            var yreceive = parseInt(dc[1]);
+            var current = $( "#vslider" ).slider( "value" );
+            if (yreceive != current) {
+              $( "#vslider" ).slider( "option", "value", parseInt(dc[1]) );
+            }
+          }
+        } else {
+          var list_element = document.createElement('li');
+          list_element.innerHTML = messageFromServer;
+          $("#message_list ul").prepend(list_element);
+        }
+      };
 
-    $("#cam").css("margin-left", ($(window).width() - 1080) / 2);
-    $("#hslider").css("margin-left", ($(window).width() - 1080) / 2);
-  });
+        var inputBox = document.getElementById("inputbox");
+
+        inputbox.addEventListener("keydown", function(e) {
+          if (!e) { var e = window.event; }
+
+          if (e.keyCode == 13) {
+            e.preventDefault(); // sometimes useful
+            name = $("#nname").val();
+            chat.send(name + ": " + inputbox.value);
+            inputbox.value="";
+          }
+        }, false);
+
+          $( "#vslider" ).slider({ orientation: "vertical", min: 80, max: 220, step: 1 });
+          $( "#hslider" ).slider({ min: 50, max: 250, step: 1 });
+          $( "#vslider" ).on( "slidechange", function( event, ui ) {
+          var values = $( "#vslider" ).slider( "value" );
+          chat.send("COO y=" + values);
+        } );
+          $( "#hslider" ).on( "slidechange", function( event, ui ) {
+          var values = $( "#hslider" ).slider( "value" );
+          chat.send("COO x=" + values);
+        } );
+          jQuery.fn.center = function ()
+          {
+          this.css("top", ($(window).height() / 2) - (this.outerHeight() / 2));
+          this.css("left", ($(window).width() / 2) - (this.outerWidth() / 2));
+          return this;
+        }
+
+        $("#cam").css("margin-left", ($(window).width() - 1080) / 2);
+        $("#hslider").css("margin-left", ($(window).width() - 1080) / 2);
+      });
 
  </script>
- <style>
- .fullscreenDiv {
-   background: url('{% static "bg.jpg" %}') repeat center center;
-   width: 100%;
-   height: auto;
-   bottom: 0px;
-   top: 0px;
-   left: 0;
-   position: absolute;
-   overflow: hidden
- }
- #title {
-   font-family: sans-serif;
-   text-transform: uppercase;
-   font-size: 22px;
-   font-weight: 800;
-   color: white;
-   text-align: center
- }
- #cam {
-   float: left;
-   width:640px;
-   height:480px;
-   background-color:#eeeeee;
- }
- #helem {
-   width:640px;
- }
- .decoded {
-   float: left;
- }
- #vslider {
-   float: left;
-   position: relative;
-   left: 20px;
-   top: 10px;
-   height: 460px;
- }
-
- #hslider {
-   position: relative;
-   top: 500px;
-   width: 640px;
- }
- #chat {
-   float: left;
-   margin-top: -15px;
-   margin-left: 80px;
-   height: 480px;
- }
- #message_list {
-   height: 480px;
-   widht: 360px;
-   word-wrap: break-word;
-   overflow: hidden;
-   max-width: 360px;
-   color: white;
- }
- #inputbox {
-   position: relative;
-   resize:none;
-   height: 40px;
-   width: 360px;
- }
- </style>
 </head>
-<div class="fullscreenDiv">
-  <div id="title"><h1>Stratos View</h1></div>
-  <div id="cam">
-    <img id="img" class="decoded" width=640 height=480 src="http://aufrinfo.net:8083/" alt="Ooops"></img>
-  </div>
-  <div id="vslider"></div>
-  <div id="helem">
-    <div id="hslider"></div>
-  </div>
-  <div id="chat">
-    <div id="message_list">
-      <ul>
-      </ul>
+<body>
+  <div class="fullscreenDiv">
+    <div id="title"><h1>{{ camera.name }}</h1></div>
+    <div id="cam">
+      <img id="img" class="decoded" width=640 height=480 src="#" alt="Ooops"></img>
     </div>
-    <textarea name="term" id="inputbox" onblur="if (this.value == '') {this.value = 'Type here';}" onfocus="if (this.value == 'Type here') {this.value = '';}">Type here</textarea></br>
+    <div id="vslider"></div>
+    <div id="helem">
+      <div id="hslider"></div>
+    </div>
+    <div id="chat">
+      <div id="message_list">
+        <ul>
+        </ul>
+      </div>
+      <textarea name="term" id="inputbox" onblur="if (this.value == '') {this.value = 'Type here';}" onfocus="if (this.value == 'Type here') {this.value = '';}">Type here</textarea></br>
     Nickname: <input id="nname" type="text" name="nname">
+    </div>
   </div>
-</div>
-<script>
-</script>
+</body>
 </html>
