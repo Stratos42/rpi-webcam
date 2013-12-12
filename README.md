@@ -52,20 +52,26 @@ Run the motion server:
 
 ## Django-website
 
-In django-website/camera/templates/cameras/, modify the URL of your rpi for the video stream and the websocket in the 'camera_room.html' file
-(Lines 19 and 20)
-
 The directory django-website is django project.
 
 	python manage.py syncdb
 	python manage.py runserver 8080
 
-Connect to your django website http://localhost:8080/admin and create a Camera Room.
-Access to you Camera Room: http://localhost:8080/cameras/1
+Connect to your django website http://localhost:8080/admin and create a Camera Room. Fill ALL the fields:
+- name: room's name
+- cam_ip1: ip of the video stream (local)
+- cam_port1: port of the video stream (local)
+- cam_ip2: ip of the video stream
+- cam_port2: port of the video stream
+- socket_ip1: ip of the camserver.py (local)
+- socket_port1: port of the camserver.py (local)
+- socket_ip2: ip of the camserver.py
+- socket_port2: port of the camserver.py
 
 ## TODO
 
 - [x] PiPan control by websocket
 - [x] Slider update when client change the value
-- [ ] Repair http://localhost:8080/cameras/ (list Room)
-- [ ] Make URL in camera_room.html linked to the database
+- [x] Repair http://localhost:8080/cameras/ (list Room)
+- [x] Make URL in camera_room.html linked to the database
+- [ ] Replace slider with arrow (option ?)
